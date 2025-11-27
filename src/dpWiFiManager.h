@@ -49,7 +49,7 @@
 //ESP WebServer initial values
 String init_ssidString = "DPWLan_";
 String init_passwordString = "dopeedwifi";
-String init_espHostname = "DPESP32_Default";
+String init_espHostname = "DP_ESP32_Default";
 String init_espWiFiStaticIpAddress = "";
 String init_espWiFiGateway = "";
 String init_espWiFiSubnet = "";
@@ -197,7 +197,9 @@ int setupNetwork(int _wsLedPin = -1)
     }
     if(devDelay){delay(1000);}
 
-    
+    //ssidString = "DPWLan";   
+    //passwordString = "passwordlength";
+
     //WiFi.setHostname(espHostname.c_str());
 
     //IF STATIC IP NEEDED    
@@ -211,10 +213,13 @@ int setupNetwork(int _wsLedPin = -1)
       WiFi.config(staticIP, staticGateway, staticSubnet);
     }
 
-    Serial.println("Wifi connecting to "+ssidString+" with Password: "+passwordString);    
+    Serial.println("Wifi connecting to "+ssidString+" with Password: "+passwordString);        
     WiFi.mode(WIFI_STA);    
+    Serial.println("Wifi mode set to WiFi_STA");
+
     if(devDelay){delay(1000);}
     WiFi.begin(ssidString.c_str(), passwordString.c_str());
+    Serial.println("Wifi connection began...");
 
     int connCntr = 0;
     while(WiFi.status() != WL_CONNECTED && connCntr<20) 
@@ -499,9 +504,37 @@ void handleNotFound()
 void handleMain()
 {
   String pageString = MAIN_PAGE; 
+  String menuString = MENU_ROW;
+  pageString.replace("|menuRow|",menuString);
+
+  
+  if(wifiWebServer.arg("btnSetTestMode")!=""){
+    //
+  } 
+  
+  if(wifiWebServer.arg("btnSetDigPotValue")!=""){
+    //
+  }
+
+  
+  String projectTitleParameter = "<h2>" + String(espHostname) + "</h2>"; 
+  String defaultPageTitleParameter = "<h3>Default Page Title</h3>\r\n";
+  String defaultMainPageParameter = "<a style=\"margin-left: 15px;\">" + String("defaultParameter") + "</a>";
+    
+    
+  pageString.replace("|panelID|",espHostname);    
+  pageString.replace("|projectTitle|",projectTitleParameter);       
+  pageString.replace("|defaultMainPageParameter|",defaultPageTitleParameter+defaultMainPageParameter); 
+
+  
+  pageString.replace("|testLabelValue|","TestLabel");
+  
+  pageString.replace("|testVariableValueParameter|","TestVarPar");
 
   
     
+
+
   wifiWebServer.send(200, "text/html", pageString);    
   
 }
@@ -517,6 +550,8 @@ void handleProjectConfigPage()
   String apiPortParameter = "<input style=\"margin-left: 15px;\" type=\"text\" class=\"form-control\" name=\"apiPort\" value=\"" + apiPort + "\" required/>";                           
   
   String pageString = PROJECT_CONFIG_PAGE;
+  String menuString = MENU_ROW;
+  pageString.replace("|menuRow|",menuString);
 
   pageString.replace("|panelID|",espHostname);
   pageString.replace("|projectTitleParameter|",projectTitleParameter);
@@ -593,6 +628,9 @@ void handleNetworkConfigPage(bool _isAdvanced)
   } 
   
   String pageString = NETWORK_CONFIG_PAGE;
+  String menuString = MENU_ROW;
+  pageString.replace("|menuRow|",menuString);
+
   if(_isAdvanced){pageString = ADVANCED_NETWORK_CONFIG_PAGE;}
 
   pageString.replace("|panelID|",espHostname);
@@ -725,17 +763,19 @@ void handleFirmwareConfigPage()
   String firmwarePathParameter = "<input style=\"margin-left: 15px;\" type=\"text\" class=\"form-control\" name=\"firmwarePath\" value=\"" + firmwarePath + "\" required/>"; 
   String firmwareFilenameParameter = "<input style=\"margin-left: 15px;\" type=\"text\" class=\"form-control\" name=\"firmwareFilename\" value=\"" + firmwareFilename + "\" required/>"; 
 
-  String fwConfigPage = FIRMWARE_CONFIG_PAGE;
+  String pageString = FIRMWARE_CONFIG_PAGE;
+  String menuString = MENU_ROW;
+  pageString.replace("|menuRow|",menuString);
 
-  fwConfigPage.replace("|panelID|",espHostname);
-  fwConfigPage.replace("|projectTitleParameter|",projectTitleParameter);
-  fwConfigPage.replace("|lastFWFileName|",lastFWFileNameParameter);
-  fwConfigPage.replace("|lastFWDateTime|",lastFWDateTimeParameter);
-  fwConfigPage.replace("|firmwareURL|",firmwareURLParameter);
-  fwConfigPage.replace("|firmwarePath|",firmwarePathParameter);
-  fwConfigPage.replace("|firmwareFilename|",firmwareFilenameParameter);
+  pageString.replace("|panelID|",espHostname);
+  pageString.replace("|projectTitleParameter|",projectTitleParameter);
+  pageString.replace("|lastFWFileName|",lastFWFileNameParameter);
+  pageString.replace("|lastFWDateTime|",lastFWDateTimeParameter);
+  pageString.replace("|firmwareURL|",firmwareURLParameter);
+  pageString.replace("|firmwarePath|",firmwarePathParameter);
+  pageString.replace("|firmwareFilename|",firmwareFilenameParameter);
 
-  wifiWebServer.send(200, "text/html", fwConfigPage);
+  wifiWebServer.send(200, "text/html", pageString);
   debugln("Firmware Config Page Loaded!");
 }
 
@@ -840,11 +880,28 @@ void setPixel(uint8_t r, uint8_t g, uint8_t b)
 {    
     
     if(wsLedPin != -1)
-    {  
-      int szorzo = 5;  
-      RgbColor _setColor(g*szorzo,r*szorzo,b*szorzo);      
-      wsLeds.SetPixelColor(0, _setColor);
-      wsLeds.Show();
+    { 
+      if(wsLedPin == 99) //Normal led output on pin2 @nodemcu
+      {
+        pinMode(2,OUTPUT);
+        if(r == 0 && g == 0 && b == 0)
+        {          
+          digitalWrite(2,LOW);
+        }
+        else
+        {          
+          digitalWrite(2,HIGH);
+        }
+      }
+      else
+      {
+        
+        int szorzo = 5;  
+        RgbColor _setColor(g*szorzo,r*szorzo,b*szorzo);      
+        wsLeds.SetPixelColor(0, _setColor);
+        wsLeds.Show();
+
+      }
 
     }
   }

@@ -1,4 +1,16 @@
 //----------------------
+
+const char MENU_ROW[] = R"rawliteral(
+      <div class="menuDiv" align="center">         
+        <button onclick="document.location='./'">Main</button> &nbsp;
+        <button onclick="document.location='./projectConfig'">Project</button> &nbsp;
+        <button onclick="document.location='./networkConfig'">Network</button> &nbsp;
+        <button onclick="document.location='./firmwareConfig'">FW</button> &nbsp;
+      </div>
+)rawliteral";
+
+const char TEST_ROW[] = "testLineForMe";
+
 const char MAIN_PAGE[] = R"rawliteral(
 <!DOCTYPE HTML>
 <html>
@@ -46,39 +58,18 @@ const char MAIN_PAGE[] = R"rawliteral(
         |projectTitle|
       <h2>Main Page</h2>
       <FORM action="./" method="post">    
-        <div class="centerDiv" align="center"> 
-            <br><br><h3>Akkumulator: |batteryVoltage| V   (|batteryPercentage| %)</h3>            
-            <br><br><h3>Test Mode:  |testMode|
-              <INPUT style="margin-left: 15px;" type="submit" name="btnSetTestMode" value="SET">     
-            <br><br><h3>Set Mux PosVel:  |muxPosVelParameter|
-              <INPUT style="margin-left: 15px;" type="submit" name="btnMuxPosVel" value="SET">  
-            <br><br><h3>Set Mux HorVer:  |muxHorVerParameter|
-              <INPUT style="margin-left: 15px;" type="submit" name="btnMuxHorVer" value="SET">  
-              
-            <br><br><h3>Set Mux ImpGain_EN:  |muxImpGainEnParameter|
-              <INPUT style="margin-left: 15px;" type="submit" name="btnMuxImpGainEn" value="SET">  
+        <div class="centerDiv" align="center">             
 
-            <br><br><h3>Filter ID :  |filterIdParameterParameter|   
-              <INPUT style="margin-left: 15px;" type="submit" name="btnFilterId" value="SET">  
+            <br><br><h3>TestLabel Value:  |testLabelValue|
+              <INPUT style="margin-left: 15px;" type="submit" name="btnSetTestLabel" value="SET">
 
-            <br><br><h3>GAIN STAT :  |gainStatParameter|
-            <br><br><h3>Reset Battery Fuel Gauge:  
-              <INPUT style="margin-left: 15px;" type="submit" name="rstBatteryFuelGauge" value="RESET">  
-            <br><br><h3>Set DAC Value: |dacValueParameter|</h3>
-              <INPUT style="margin-left: 15px;" type="text" class="form-control" name="setDacValue" value=""/>         
-              <INPUT style="margin-left: 15px;" type="submit" name="btnSetDacValue" value="SET">
-            <br><br><h3>Set Dig Pot Value: |digPotValueParameter|</h3>
-              <INPUT style="margin-left: 15px;" type="text" class="form-control" name="setDigPotValue" value=""/>         
-              <INPUT style="margin-left: 15px;" type="submit" name="btnSetDigPotValue" value="SET">      
-          
-              
+            <br><br><h3>Set TestVariable Value: |testVariableValueParameter|</h3>
+              <INPUT style="margin-left: 15px;" type="text" class="form-control" name="setTestVariableValue" value=""/>         
+              <INPUT style="margin-left: 15px;" type="submit" name="btnSetTestVariableValue" value="SET">      
+
         </div>
       </FORM>
-      <div class="menuDiv" align="center">         
-        <button onclick="document.location='./'">Main</button> |
-        <button onclick="document.location='./projectConfig'">Project</button> |
-        <button onclick="document.location='./networkConfig'">Network</button> |
-        <button onclick="document.location='./firmwareConfig'">FW</button>          
+      |menuRow|
       </div>
     </div>        
   </body>
@@ -155,12 +146,7 @@ body { background-color: #303030; font-size: 12px; font-family: Arial, Helvetica
           </p>
         </div>
       </FORM>
-      <div class="menuDiv" align="center">         
-        <button onclick="document.location='./'">Main</button> |
-        <button onclick="document.location='./projectConfig'">Project</button> |
-        <button onclick="document.location='./networkConfig'">Network</button> |
-        <button onclick="document.location='./firmwareConfig'">FW</button>          
-      </div>
+      |menuRow|
     </div>    
   </body>
 </html>
@@ -243,12 +229,7 @@ body { background-color: #303030; font-size: 12px; font-family: Arial, Helvetica
           </p>
         </div>
       </FORM>
-      <div class="menuDiv" align="center">         
-        <button onclick="document.location='./'">Main</button> |
-        <button onclick="document.location='./projectConfig'">Project</button> |
-        <button onclick="document.location='./networkConfig'">Network</button> |
-        <button onclick="document.location='./firmwareConfig'">FW</button>          
-      </div>
+      |menuRow|
     </div>    
   </body>
 </html>
@@ -324,12 +305,7 @@ body { background-color: #303030; font-size: 12px; font-family: Arial, Helvetica
           </p>          
         </div>
       </FORM>
-      <div class="menuDiv" align="center">         
-        <button onclick="document.location='./'">Main</button> |
-        <button onclick="document.location='./projectConfig'">Project</button> |
-        <button onclick="document.location='./networkConfig'">Network</button> |
-        <button onclick="document.location='./firmwareConfig'">FW</button>          
-      </div>
+      |menuRow|
     </div>    
   </body>
 </html>
@@ -392,12 +368,7 @@ body { background-color: #303030; font-size: 12px; font-family: Arial, Helvetica
           <br><br><INPUT style="margin-left: 15px;" type="submit" value="SAVE">
         </div>
       </FORM>
-      <div class="menuDiv" align="center">         
-        <button onclick="document.location='./'">Main</button> |
-        <button onclick="document.location='./projectConfig'">Project</button> |
-        <button onclick="document.location='./networkConfig'">Network</button> |
-        <button onclick="document.location='./firmwareConfig'">FW</button>          
-      </div>
+      |menuRow|
     </div>    
   </body>
 </html>

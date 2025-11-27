@@ -24,29 +24,34 @@ bool isInit = true;
 
 
 void setup() {  
-  
-  
 
   Serial.begin(115200);  
+  delay(1000);
 
-  //delay(1000);
+  Serial.println();
+  Serial.println("In da beginning!");
+  
   EEPROM.begin(EEPROMConfigSize); 
-  debugln("In da beginning!");
-
+  
+  
   Wire.begin();
   Wire.setClock(400000);
 
   SPI.begin();
 
   
-  networkConnStatus = setupNetwork();
+  //delay(1000);
+  networkConnStatus = setupNetwork(99);
+  
 
+  Serial.println("Begin LOOP");
+  //delay(1000);
     
 }
 
-
 void loop()
 {
+
   wifiWebServer.handleClient();
 
   if(millis() - checkUpdateTimer > 10000)
